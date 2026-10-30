@@ -1,0 +1,28 @@
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker, Session
+from app.core.config import settings
+
+# SQLite connection args for multi-threaded FastAPI
+connect_args = {"check_same_thread": False} if settings.DATABASE_URL.startswith("sqlite") else {}
+
+engine = create_engine(
+    settings.DATABASE_URL,
+    connect_args=connect_args,
+    echo=False
+)
+
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
+
+def get_db():
+    db: Session = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+def init_db():
+    # Import all models so metadata is registered
+    import app.models # noqa
+    Base.metadata.create_all(bind=engine)
+

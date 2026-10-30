@@ -1,0 +1,14 @@
+fastapi>=0.110.0
+uvicorn>=0.28.0
+pydantic>=2.6.0
+sqlalchemy>=2.0.0
+pint>=0.23
+rapidfuzz>=3.6.0
+sentence-transformers>=2.5.0
+networkx>=3.2.0
+reportlab>=4.1.0
+openpyxl>=3.1.0
+pymupdf>=1.23.0
+pytest>=8.0.0
+hypothesis>=6.98.0
+python-multipart>=0.0.9

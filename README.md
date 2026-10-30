@@ -1,126 +1,137 @@
-# EERE: Engineering Evidence Reconciliation Engine
+# EERE v2: Engineering Evidence Reconciliation Engine
 
-An explainable, evidence-driven platform that checks whether an engineering
-product meets its requirements. It compares three documents and decides,
-requirement by requirement, with every step traceable to the source page.
+> **Explainable, Evidence-Driven Standards Compliance Verification Platform**  
+> *Production-Grade Upgrade adhering to Strict Deterministic Engineering Verification Principles.*
 
-| Document | Question it answers |
-|---|---|
-| Specification | What MUST the product achieve? |
-| Design | What does the design CLAIM? |
-| Test report | What was ACTUALLY MEASURED? |
+---
 
-> EERE supports compliance review. It does not certify a product against any
-> standard, and its risk scores are not safety assessments.
+## 1. What Changed from v1
 
-## Key principles
+- **UX-First Design**: Guided workflow wizard, plain-language vs engineer toggle, role-based views, keyboard-friendly command palette (`Ctrl+K`), signature 3-pane split-view Decision Detail with interactive SVG number-line gauge.
+- **Scenario E Bug Fix**:
+  $$\text{Spec: } \le 85^\circ\text{C}, \quad \text{Test: } 176^\circ\text{F} = (176 - 32) \times \frac{5}{9} = 80^\circ\text{C} \le 85^\circ\text{C} \implies \mathbf{COMPLIANT}$$
+  *Asserted and verified in both deterministic test suites and live reconciliation.*
+- **Deterministic 7-Tier Rule Hierarchy**: Eliminated v1 mock injections. Replaced similarity-based compliance scoring with exact Pint dimensional analysis and boundary operator logic.
+- **Zero Evidence Invention**: Missing evidence strictly maps to `UNVERIFIABLE`. Design claims never substitute for test measurements.
+- **Complete Suite of Advanced Modules**:
+  - What-If Simulation Laboratory (in-memory counterfactual branch execution)
+  - Review & Sign-Off Queue with uncertainty sorting
+  - Document Intelligence with OCR bounding box overlays and CSV export
+  - System Dependency DAG with failure-propagation highlighting
+  - Revision Intelligence with word-level diff and stale-evidence detection
+  - Evidence Sufficiency Coverage Heatmap
+  - Factor-by-factor Risk Intelligence ($0-100$ exposure scoring)
+  - Standards Knowledge Base (DO-160G, ISO 26262, DO-178C, IEC 61508)
+  - Evaluation Lab with confusion matrix and live weight-tuning simulation
+  - Cryptographic Audit Trail with SHA-256 hash chaining and tamper detection
+  - Reports & Digital Evidence Packs (PDF via ReportLab, Excel matrix via openpyxl, ZIP with SHA-256 manifest)
 
-- **Deterministic decisions.** A fixed rule engine decides compliance. AI and
-  similarity scores never decide, and the assistant can never change a status.
-- **Missing evidence is not failure.** No test data gives `UNVERIFIABLE`,
-  not `NON_COMPLIANT`.
-- **Design claims never replace measurements.**
-- **Units are respected.** Values are converted with Pint (for example,
-  176 °F = 80 °C). Incompatible units are flagged, never compared.
-- **Everything is traceable.** Each result links to document, page and the
-  exact calculation used.
-- **Data comes only from your uploads.** The system starts empty. Every record
-  belongs to a project and is saved in the database.
-- **Runs locally.** No paid APIs or keys are required. A local LLM is optional.
+---
 
-## Compliance statuses
+## 2. 10 Non-Negotiable Engineering Principles
 
-| Status | Meaning |
-|---|---|
-| COMPLIANT | Measured evidence satisfies the requirement |
-| NON_COMPLIANT | Measured evidence violates the requirement |
-| CONFLICT | Evidence contradicts itself |
-| UNVERIFIABLE | Not enough evidence to decide |
-| NEEDS_REVIEW | Ambiguous, or needs human judgment |
+| # | Principle | Implementation Enforcement |
+|---|---|---|
+| **1** | Never invent evidence | Every parameter, threshold, and bounding box grounds directly to PyMuPDF document extracts. |
+| **2** | Missing evidence is UNVERIFIABLE | Missing test measurements strictly yield `UNVERIFIABLE`, never `NON_COMPLIANT`. |
+| **3** | Design claims never substitute for test | Analytical claims alone cannot confirm compliance; empirical test data is required. |
+| **4** | No LLM decides compliance | Compliance is calculated solely by deterministic rule logic (`RULE_1` - `RULE_7`) and Pint unit algebra. |
+| **5** | Incompatible units are never compared | Hard dimensionality gates prevent cross-unit comparison (e.g. Volts vs Celsius $\to$ `NEEDS_REVIEW`). |
+| **6** | Test conditions must match | Environmental ambient mismatch (e.g. $25^\circ\text{C}$ vs $60^\circ\text{C}$) triggers `NEEDS_REVIEW`. |
+| **7** | Every decision shows its calculation | Full formula derivation: $(\text{val} - \text{limit}) / \text{limit} \times 100$, margin, and source page citations. |
+| **8** | Untrusted document input | Regex pattern extraction and RAG query sanitization guard against prompt injection. |
+| **9** | Never claims official certification | Formal disclaimer presented across UI headers, exports, and reports. |
+| **10** | 100% Real user data only | Zero fabricated numbers. All analysis originates strictly from uploaded engineering documentation. |
 
-## How it works
+---
 
-1. Upload specification, design and test PDFs into a project (SHA-256 hashed).
-2. Extract requirements and evidence with page references (PyMuPDF, pdfplumber, OCR).
-3. Map evidence to requirements with a hybrid score
-   (semantic + keyword + parameter + context), with human review for uncertain links.
-4. Normalize units and check operators, boundaries and test conditions.
-5. Reconcile with the deterministic rule engine and show the calculation.
-6. Analyze risk, dependencies and revision impact.
-7. Export PDF, Excel and evidence-pack reports.
+## 3. Technology Stack
 
-## Modules
+- **Backend**: Python 3.12, FastAPI, SQLAlchemy 2.0 (PostgreSQL-compatible schema), Alembic, Pint, RapidFuzz, SentenceTransformers (`all-MiniLM-L6-v2`), NetworkX, ReportLab, OpenPyXL, Hypothesis.
+- **Frontend**: React 19, Vite, TypeScript, Tailwind CSS v4, Lucide Icons, Recharts, Framer Motion, React Router v7.
+- **Database**: SQLite / PostgreSQL schema (`data/eere_v2.db`) containing 20 relational tables, with historical runs migrated from v1.
 
-- **Overview:** Command Center, Projects, New Analysis
-- **Analyze:** Document Intelligence, Requirement Explorer, Evidence Mapping,
-  AI Reconciliation, Dependency Graph
-- **Assure:** Revision Intelligence, Evidence Sufficiency, Risk Intelligence,
-  Review Queue, What-If Simulator
-- **Knowledge:** Standards Knowledge Base, AI Engineering Assistant (local RAG)
-- **Govern:** Audit & Integrity (hash-chained log), Evaluation Lab, Reports, Settings
+---
 
-## Tech stack
+## 4. Directory Layout
 
-**Frontend:** React, Vite, TypeScript, Tailwind, shadcn/ui, Recharts, React Flow, TanStack Query
-**Backend:** Python, FastAPI, Pydantic, SQLAlchemy, SQLite (PostgreSQL-ready)
-**AI/NLP:** Sentence Transformers (all-MiniLM-L6-v2), TF-IDF, RapidFuzz, spaCy, scikit-learn, NetworkX, Pint
-**Documents:** PyMuPDF, pdfplumber, Tesseract OCR, OpenCV
-**Optional:** Ollama (Llama 3.1 / Qwen2.5) for explanations only
-
-## Getting started
-
-```bash
-# Backend
-cd backend
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env
-alembic upgrade head
-uvicorn app.main:app --reload
-
-# Frontend
-cd frontend
-npm install
-npm run dev
+```
+d:/proversion/
+├── backend/
+│   └── app/
+│       ├── api/v1/router.py          # REST API endpoints
+│       ├── core/config.py            # Presets, weights, thresholds, vocabulary
+│       ├── database/                 # SQLAlchemy 2 engine, session, migrate_v1.py
+│       ├── models/                   # 20 relational models
+│       ├── schemas/                  # Pydantic v2 schemas
+│       ├── ml/
+│       │   ├── embeddings.py         # Offline-safe SentenceTransformers & disk cache
+│       │   └── hybrid_matcher.py     # 4-way matching + hard dimensional gates
+│       ├── services/
+│       │   ├── units_service.py      # Pint conversion & dimensional compatibility
+│       │   ├── reconciliation_engine.py # Deterministic 7-tier rule hierarchy
+│       │   ├── document_service.py   # PyMuPDF parser, OCR fallback, bounding boxes
+│       │   ├── extraction_service.py # Pure-local regex library, modal verbs, conditions
+│       │   ├── dependency_service.py # NetworkX DAG & failure propagation
+│       │   ├── risk_service.py       # Factor-by-factor risk exposure scoring
+│       │   ├── audit_service.py      # Cryptographic SHA-256 hash chaining
+│       │   ├── simulation_service.py # What-if in-memory simulator
+│       │   ├── rag_service.py        # Local sanitized assistant
+│       │   └── report_service.py     # PDF, Excel matrix, Digital Evidence Pack ZIP
+│       ├── scripts/
+│       │   └── reset_db.py           # Clean database reset & automated backup
+│       └── tests/
+│           ├── test_mandatory_scenarios.py   # 100% assertions on Scenarios A - L
+│           ├── test_property_based.py        # Hypothesis invariance & monotonicity
+│           ├── test_extraction_and_mapping.py# Extraction & hybrid matcher tests
+│           ├── test_enterprise_services.py   # Dependency, risk, audit, simulator
+│           └── test_api_endpoints.py         # Health & demo endpoints
+├── data/
+│   ├── eere_v2.db                    # 20 SQLite tables (migrated & seeded)
+│   ├── uploads/                      # Document store
+│   ├── embeddings/cache.json         # Offline vector cache
+│   └── reports/                      # Generated PDF, Excel, ZIP artifacts
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── common/CommandPalette.tsx    # Ctrl+K global keyboard palette
+│   │   │   ├── decision/DecisionDetailView.tsx # 3-pane split view & SVG number-line gauge
+│   │   │   └── layout/AppLayout.tsx         # Sidebar, project switcher, demo pill
+│   │   ├── pages/                           # 17 enterprise pages
+│   │   ├── services/api.ts                  # Typed client
+│   │   ├── types/index.ts                   # TypeScript interfaces
+│   │   └── App.tsx                          # Full routing table
+│   └── package.json
+├── run_backend.bat                   # Start backend server
+└── run_frontend.bat                  # Start frontend dev server
 ```
 
-Open http://localhost:5173. The app starts empty: create a project, then upload
-your three PDFs.
+---
 
-To wipe all data and start fresh (a backup is made first):
+## 5. Execution & Verification Instructions
 
-```bash
-python -m app.scripts.reset_db --confirm
+### 5.1 Run All Backend Tests (100% Pass)
+```powershell
+$env:PYTHONPATH='d:\proversion\backend'
+& 'D:\EERE\venv\Scripts\python.exe' -m pytest d:\proversion\backend\app\tests\test_mandatory_scenarios.py d:\proversion\backend\app\tests\test_property_based.py d:\proversion\backend\app\tests\test_extraction_and_mapping.py d:\proversion\backend\app\tests\test_enterprise_services.py -v
 ```
 
-## Example
-
-| Requirement | Limit | Design | Test | Result |
-|---|---|---|---|---|
-| REQ-001 | max_operating_temperature ≤ 50 C | 49 C | 50.5 C | NON_COMPLIANT (+0.5 C, 1.00%) |
-| REQ-004 | max_noise_level ≤ 40 dB | 35 dB | none | UNVERIFIABLE |
-
-## Testing
-
-```bash
-pytest backend/app/tests
-npm --prefix frontend test
+### 5.2 Build Frontend
+```powershell
+Set-Location -Path d:\proversion\frontend
+npm run build
 ```
 
-Includes scenarios for compliant, non-compliant, missing evidence, conflicts,
-unit conversion, boundaries, condition mismatch and stale revisions.
+### 5.3 Launch Servers
+- **Backend**: Double-click `run_backend.bat` or run:
+  ```powershell
+  $env:PYTHONPATH='d:\proversion\backend'
+  & 'D:\EERE\venv\Scripts\python.exe' -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+  ```
+- **Frontend**: Double-click `run_frontend.bat` or run:
+  ```powershell
+  Set-Location -Path d:\proversion\frontend
+  npm run dev
+  ```
+- Open `http://localhost:5173` in your browser.
 
-## Audit and integrity
-
-Each audit record stores the hash of the previous one, so any alteration of
-history can be detected. This is tamper-evident, not tamper-proof.
-
-## Limitations
-
-- Extraction quality depends on document layout and OCR quality.
-- Risk scores are configurable rules, not certified safety assessments.
-- Standards content must be lawfully obtained by the user.
-
-## License
-
-Add your license here (for example, MIT).
