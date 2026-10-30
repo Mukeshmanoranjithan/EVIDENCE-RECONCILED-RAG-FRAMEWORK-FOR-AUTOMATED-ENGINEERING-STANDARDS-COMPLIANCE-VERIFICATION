@@ -1,0 +1,17 @@
+{
+  "name": "EERE v2 Full Stack Platform",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    }
+  },
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": {
+      "label": "EERE v2 Platform",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "postCreateCommand": "pip install -r backend/requirements.txt && cd frontend && npm install && npm run build && cd .."
+}

@@ -12,3 +12,4 @@ pymupdf>=1.23.0
 pytest>=8.0.0
 hypothesis>=6.98.0
 python-multipart>=0.0.9
+

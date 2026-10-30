@@ -1,4 +1,8 @@
-const API_BASE = 'http://localhost:8000/api';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || (
+  typeof window !== 'undefined' && window.location.port === '5173'
+    ? 'http://localhost:8000/api'
+    : '/api'
+);
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const url = `${API_BASE}${path}`;
@@ -24,7 +28,7 @@ export const api = {
   createProject: (data: { name: string; description?: string; domain: string; version: string; preset: string }) => 
     request<any>('/projects', { method: 'POST', body: JSON.stringify(data) }),
   analyzeWizard: (formData: FormData) => {
-    return fetch('http://localhost:8000/api/projects/analyze_wizard', {
+    return fetch(`${API_BASE}/projects/analyze_wizard`, {
       method: 'POST',
       body: formData,
     }).then(async res => {
@@ -41,7 +45,7 @@ export const api = {
   // Documents
   getDocuments: (projectId: string) => request<any[]>(`/projects/${projectId}/documents`),
   uploadDocument: (projectId: string, formData: FormData) => {
-    return fetch(`http://localhost:8000/api/projects/${projectId}/documents`, {
+    return fetch(`${API_BASE}/projects/${projectId}/documents`, {
       method: 'POST',
       body: formData,
     }).then(async res => {
